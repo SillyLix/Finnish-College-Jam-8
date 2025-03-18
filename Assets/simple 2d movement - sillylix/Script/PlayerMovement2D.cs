@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 // This script is for 2D movement with jump, dash, double jump, rigidbody movement, and transform movement
 // You can use this script for 2D platformer games and 2D top-down games
@@ -7,6 +8,8 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
+
+// MESSAGE FROM ANNE: I added in Flip() and called it in HandleMovement()
 public class PlayerMovement2D : MonoBehaviour
 {
     #region Variables
@@ -42,6 +45,8 @@ public class PlayerMovement2D : MonoBehaviour
     private bool isTouchingWall = false;
     private Rigidbody2D rb2d;
 
+    public static bool isFacingRight = true;
+
     #endregion
 
     void Start()
@@ -69,6 +74,8 @@ public class PlayerMovement2D : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             rb2d.linearVelocity = new Vector2(horizontalInput * playerSpeed, rb2d.linearVelocity.y);
+
+            Flip();
         }
 
         if (verticalMovementNeeded)
@@ -164,5 +171,16 @@ public class PlayerMovement2D : MonoBehaviour
     IEnumerator waitBeforTurningOffJump()
     {
         yield return new WaitForFixedUpdate();
+    }
+    private void Flip()
+    {
+        if (isFacingRight && horizontalInput < 0f || !isFacingRight && horizontalInput > 0f)
+        {
+            isFacingRight = !isFacingRight;
+
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
     }
 }
