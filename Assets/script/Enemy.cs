@@ -39,7 +39,6 @@ public class Enemy : MonoBehaviour
     [SerializeField, BoxGroup("Enemy Info"), Required, ShowIf("boomer")]
     private float boomDmg = 20f;
 
-    [BoxGroup("AI Settings")]
     private float currentDistance;
 
     private HealthSystem playerHealthSystem;
