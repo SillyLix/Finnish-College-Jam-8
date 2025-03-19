@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RevolverFunction : MonoBehaviour
@@ -38,7 +37,7 @@ public class RevolverFunction : MonoBehaviour
         }
     }
 
-    // Jos osuu johonkin niin nuoli poistuu (EI TOIMI VIELLÄ)
+    // Jos osuu johonkin niin nuoli poistuu (EI TOIMI VIELLï¿½)
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))

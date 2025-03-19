@@ -7,6 +7,7 @@ public class DamageSystem : MonoBehaviour
     [SerializeField] private float damageAmount = 10f;
     [Tooltip("If you are using trigger to deal dmg click this")]
     [SerializeField] private bool isTriggerType;
+    [SerializeField] private bool destroyAfterDMG = true;
 
     [Header("Audio Configuration")]
     [SerializeField] private AudioClip damageSound;
@@ -52,10 +53,15 @@ public class DamageSystem : MonoBehaviour
         if (audioSource != null && damageSound != null)
         {
             audioSource.PlayOneShot(damageSound);
-        }
-        else
-        {
-            Debug.LogWarning("AudioSource or damageSound is missing");
+            if (destroyAfterDMG)
+            {
+                gameObject.GetComponent<SpriteRenderer>().enabled = false; // Disable the sprite renderer after playing the sound
+                Destroy(gameObject, damageSound.length); // Destroy the object after the sound has played}
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource or damageSound is missing");
+            }
         }
     }
 }

@@ -26,7 +26,9 @@ public class Enemy : MonoBehaviour
     private bool shooter;
 
     [SerializeField, BoxGroup("Enemy Info"), Required, ShowIf("shooter")]
-    private GameObject bullateSpawnPoint;
+    private GameObject bulletSpawnPoint;
+    [SerializeField, BoxGroup("Enemy Info"), Required, ShowIf("shooter")]
+    private GameObject bulletPrefab;
 
     [BoxGroup("Enemy type")]
     [SerializeField, HorizontalGroup("Enemy type/type")]
@@ -47,6 +49,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        transform.LookAt(player.transform.position);
+        transform.Rotate(0, -90, 0); // Adjust the rotation to face the player correctly
         aIPath = GetComponent<AIPath>();
         playerHealthSystem = player.GetComponent<HealthSystem>();
         enemyHealthSystem = GetComponent<HealthSystem>();
@@ -91,7 +95,11 @@ public class Enemy : MonoBehaviour
         {
             if (shooter)
             {
-                Debug.Log("Shooting at player!");
+                if (Time.time - lastAttackTime >= 1f)
+                {
+                    Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, gameObject.GetComponentInChildren<Transform>().rotation);
+                    lastAttackTime = Time.time;
+                }
             }
             else if (touch)
             {
