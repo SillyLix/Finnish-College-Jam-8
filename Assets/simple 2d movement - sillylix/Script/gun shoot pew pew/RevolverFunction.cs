@@ -36,6 +36,8 @@ public class RevolverFunction : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
     }
 
     // Jos osuu johonkin niin nuoli poistuu (EI TOIMI VIELLÄ)
@@ -43,25 +45,9 @@ public class RevolverFunction : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject);
+            Destroy(collision.gameObject); // Destroy the enemy
+            Destroy(gameObject); // Destroy the bullet
         }
-        //if (collision.gameObject.CompareTag("Bomb"))
-        //{
-        //    Destroy(gameObject);
-        //}
-        //if (collision.gameObject.CompareTag("Golem"))
-        //{
-        //    Destroy(gameObject);
-        //}
-        //if (collision.gameObject.CompareTag("Dialogue"))
-        //{
-        //    return;
-        //}
-        //if (collision.gameObject.CompareTag("Ground"))
-        //{
-        //    bulletHitbox.SetActive(false);
-        //    hasHit = true;
-        //}
         else
         {
             return;

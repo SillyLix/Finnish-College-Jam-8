@@ -61,6 +61,7 @@ public class PlayerMovement2D : MonoBehaviour
         HandleMovement();
         HandleJumping();
         HandleDashing();
+        //FlipBasedOnCursor();
     }
 
     private void FixedUpdate()
@@ -74,8 +75,6 @@ public class PlayerMovement2D : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             rb2d.linearVelocity = new Vector2(horizontalInput * playerSpeed, rb2d.linearVelocity.y);
-
-            Flip();
         }
 
         if (verticalMovementNeeded)
@@ -172,15 +171,35 @@ public class PlayerMovement2D : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
     }
+    void FlipBasedOnCursor()
+    {
+        // Get cursor position in world space
+        Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        cursorPosition.z = 0; // Ensure the cursor is 2D, not 3D
+
+        // Calculate direction from player to cursor
+        float directionToCursor = cursorPosition.x - transform.position.x;
+
+        // Debugging the cursor position and direction
+        Debug.Log("Cursor Position: " + cursorPosition);
+        Debug.Log("Direction to cursor: " + directionToCursor);
+
+        // Flip player sprite based on cursor position
+        if (directionToCursor > 0f && transform.localScale.x < 0f) // Cursor is to the right, but sprite is flipped
+        {
+            Flip();
+        }
+        else if (directionToCursor < 0f && transform.localScale.x > 0f) // Cursor is to the left, but sprite is not flipped
+        {
+            Flip();
+        }
+    }
+
     private void Flip()
     {
-        if (isFacingRight && horizontalInput < 0f || !isFacingRight && horizontalInput > 0f)
-        {
-            isFacingRight = !isFacingRight;
-
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
-        }
+        // Flip the sprite by changing the sign of the x scale
+        Vector3 localScale = transform.localScale;
+        localScale.x = -localScale.x;
+        transform.localScale = localScale;
     }
 }
