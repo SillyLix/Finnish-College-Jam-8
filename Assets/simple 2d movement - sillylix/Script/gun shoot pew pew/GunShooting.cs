@@ -53,7 +53,7 @@ public class GunShooting : MonoBehaviour
         bullets -= 1;
 
         playerAnimator?.SetTrigger("FireRevolver");
-        SoundFXManager.instance.PlaySoundFXClip(soundname, transform, 1f);
+        SoundFXManager.instance.PlaySoundFXClip(soundname, transform, 0.3f);
 
 
         // Use the barrel's position for spawning bullets
