@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyDie : MonoBehaviour
+public class BulletMovement : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -12,12 +12,5 @@ public class EnemyDie : MonoBehaviour
     void Update()
     {
         
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Bullet"))
-        {
-            Destroy(gameObject);
-        }
     }
 }

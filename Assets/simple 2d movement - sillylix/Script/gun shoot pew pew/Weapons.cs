@@ -5,40 +5,40 @@ public class Weapons : MonoBehaviour
     public GameObject bullet;
     public Animator playerAnimator;
 
+    private SpriteRenderer spriteRenderer;
+
     private PlayerMovement2D playerController;
 
     public bool canFire = true;
+
     public float fireCooldown = 0.3f;
     private float fireTimer = 0f;
+    private float gunOffsetX; // For gun position offset (for facing L and R)
+    
 
     public int bullets = 30;
     public int maxBullets = 30;
 
     public Vector2 spawnOffset = new Vector2(0.8f, 0);
+    
 
-    private SpriteRenderer spriteRenderer;
+    private bool isFacingRight = true;
 
     void Start()
     {
-        playerController = FindObjectOfType<PlayerMovement2D>(); // Ensures we get the correct player controller
-
-        // Get the SpriteRenderer component on the same GameObject
+        playerController = FindFirstObjectByType<PlayerMovement2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("SpriteRenderer component not found on this GameObject.");
-        }
+
+        gunOffsetX = transform.localPosition.x;
+        
     }
 
     void Update()
     {
-        // Make sure bullet count doesn't exceed max
-        if (bullets > maxBullets)
-        {
-            bullets = maxBullets;
-        }
+        // Clamp bullet count within max bullets
+        bullets = Mathf.Min(bullets, maxBullets);
 
-        // Handle firing
+        // Handle firing cooldown
         if (!canFire)
         {
             fireTimer += Time.deltaTime;
@@ -49,13 +49,25 @@ public class Weapons : MonoBehaviour
             }
         }
 
-        // Fire the weapon when clicking and can fire
+        // Fire weapon
         if (Input.GetMouseButtonDown(0) && canFire)
         {
             FireGun();
         }
 
-        // Aim the gun at the cursor
+        // Handle facing direction based on player input
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            isFacingRight = false;
+            UpdateGunXPosition(); // Update the gun's X position when facing left
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            isFacingRight = true;
+            UpdateGunXPosition(); // Update the gun's X position when facing right
+        }
+
+        // Aim at cursor
         AimAtCursor();
     }
 
@@ -65,38 +77,27 @@ public class Weapons : MonoBehaviour
         bullets -= 1;
 
         // Trigger fire animation
-        if (playerAnimator != null)
-        {
-            playerAnimator.SetTrigger("FireRevolver");
-        }
+        playerAnimator?.SetTrigger("FireRevolver");
 
-        // Determine where the bullet will spawn
-        Vector2 spawnPosition = PlayerMovement2D.isFacingRight
-            ? (Vector2)transform.position + spawnOffset
-            : (Vector2)transform.position - spawnOffset;
+        // Calculate the spawn position considering the gun's rotation
+        Vector2 spawnPosition = (Vector2)transform.position + (isFacingRight ? spawnOffset : -spawnOffset);
 
+        // Instantiate the bullet at the correct position
         GameObject newBullet = Instantiate(bullet, spawnPosition, Quaternion.identity);
 
-        // Get direction to the cursor and set bullet's direction
+        // Get direction to cursor and set bullet's direction
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
             Input.mousePosition.x,
             Input.mousePosition.y,
             -Camera.main.transform.position.z
         ));
 
-        Vector2 bulletDirection = (mousePosition - transform.position).normalized;
-        RevolverFunction revolverScript = newBullet.GetComponent<RevolverFunction>();
-        revolverScript.SetDirection(bulletDirection);
+        // Calculate direction to cursor
+        Vector2 direction = (mousePosition - transform.position).normalized;
+        newBullet.GetComponent<RevolverFunction>().SetDirection(direction);
 
-        // Flip the bullet based on direction
-        if (bulletDirection.x < 0)
-        {
-            newBullet.transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else
-        {
-            newBullet.transform.localScale = new Vector3(1, 1, 1);
-        }
+        // Flip the bullet's sprite to match its direction
+        newBullet.transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
 
         canFire = false;
     }
@@ -128,5 +129,12 @@ public class Weapons : MonoBehaviour
         {
             spriteRenderer.flipY = false; // No flipping along the Y-axis
         }
+    }
+
+    public void UpdateGunXPosition()
+    {
+        // Adjust gun's X position based on player facing direction
+        float xOffset = isFacingRight ? gunOffsetX : -gunOffsetX;
+        transform.localPosition = new Vector2(xOffset, transform.localPosition.y);
     }
 }

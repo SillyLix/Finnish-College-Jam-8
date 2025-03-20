@@ -9,7 +9,8 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 
-// MESSAGE FROM ANNE: I added in Flip() and called it in HandleMovement()
+// MESSAGE FROM ANNE: I added in Flip(), HandleInputFlip() and called it in HandleMovement()
+//not working tho :((
 public class PlayerMovement2D : MonoBehaviour
 {
     #region Variables
@@ -45,7 +46,9 @@ public class PlayerMovement2D : MonoBehaviour
     private bool isTouchingWall = false;
     private Rigidbody2D rb2d;
 
+    //ANNES ADDED VARIABLES
     public static bool isFacingRight = true;
+    private Weapons weaponScript;
 
     #endregion
 
@@ -54,6 +57,8 @@ public class PlayerMovement2D : MonoBehaviour
         // Get the Rigidbody2D component
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = gravityScale;
+
+        weaponScript = GetComponentInChildren<Weapons>();
     }
 
     void Update()
@@ -61,7 +66,7 @@ public class PlayerMovement2D : MonoBehaviour
         HandleMovement();
         HandleJumping();
         HandleDashing();
-        //FlipBasedOnCursor();
+        //HandleInputFlip();
     }
 
     private void FixedUpdate()
@@ -171,32 +176,25 @@ public class PlayerMovement2D : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
     }
-    void FlipBasedOnCursor()
+    void HandleInputFlip()
     {
-        // Get cursor position in world space
-        Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        cursorPosition.z = 0; // Ensure the cursor is 2D, not 3D
-
-        // Calculate direction from player to cursor
-        float directionToCursor = cursorPosition.x - transform.position.x;
-
-        // Debugging the cursor position and direction
-        Debug.Log("Cursor Position: " + cursorPosition);
-        Debug.Log("Direction to cursor: " + directionToCursor);
-
-        // Flip player sprite based on cursor position
-        if (directionToCursor > 0f && transform.localScale.x < 0f) // Cursor is to the right, but sprite is flipped
+        // Check for A or D key press and flip accordingly
+        if (Input.GetKeyDown(KeyCode.A) && isFacingRight) // Pressing A, should flip to the left
         {
             Flip();
+            weaponScript.UpdateGunXPosition();
         }
-        else if (directionToCursor < 0f && transform.localScale.x > 0f) // Cursor is to the left, but sprite is not flipped
+        else if (Input.GetKeyDown(KeyCode.D) && !isFacingRight) // Pressing D, should flip to the right
         {
             Flip();
+            weaponScript.UpdateGunXPosition();
         }
     }
 
     private void Flip()
     {
+        isFacingRight = !isFacingRight;
+
         // Flip the sprite by changing the sign of the x scale
         Vector3 localScale = transform.localScale;
         localScale.x = -localScale.x;
