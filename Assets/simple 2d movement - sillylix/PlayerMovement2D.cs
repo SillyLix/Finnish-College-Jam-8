@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 // This script is for 2D movement with jump, dash, double jump, rigidbody movement, and transform movement
 // You can use this script for 2D platformer games and 2D top-down games
@@ -50,6 +49,8 @@ public class PlayerMovement2D : MonoBehaviour
     public static bool isFacingRight = true;
     private GunTransform gunTransform;
     private SpriteRenderer playerSpriteRenderer;
+
+    [SerializeField] private AudioClip jumpSound;
 
     #endregion
 
@@ -108,6 +109,7 @@ public class PlayerMovement2D : MonoBehaviour
             if ((isGrounded || isTouchingWall) && Input.GetKeyDown(jumpKey))
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
+                SoundFXManager.instance.PlaySoundFXClip(jumpSound, transform, 1f);
                 canDoubleJump = doubleJumpNeeded;
             }
             else if (canDoubleJump && Input.GetKeyDown(jumpKey))
@@ -194,11 +196,11 @@ public class PlayerMovement2D : MonoBehaviour
             // Flip player sprite based on the gun's Y-axis flip
             if (gunTransform.IsGunSpriteFlipped())
             {
-                playerSpriteRenderer.flipX = false; // Flip player sprite to face left
+                playerSpriteRenderer.flipX = true; // Flip player sprite to face left
             }
             else
             {
-                playerSpriteRenderer.flipX = true; // Flip player sprite to face right
+                playerSpriteRenderer.flipX = false; // Flip player sprite to face right
             }
         }
     }
