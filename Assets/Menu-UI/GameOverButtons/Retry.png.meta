@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: bb0719740885e6642b24fb53b6fce449
+guid: 4d27a765d5fe92a4ea10024ebe90a75e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3669053071084555937
-    second: UIDisplayNAme_0
+      213: 5207804079435638006
+    second: Retry_0
+  - first:
+      213: 7966048895245437960
+    second: Retry_1
+  - first:
+      213: 5377520069278936217
+    second: Retry_2
+  - first:
+      213: -231366788424905344
+    second: Retry_3
+  - first:
+      213: 7001497922040812067
+    second: Retry_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +58,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UIDisplayNAme_0
+      name: Retry_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 15
-        width: 219
-        height: 61
+        x: 23
+        y: 35
+        width: 73
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +127,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ae0d0424581be230800000000000000
-      internalID: 3669053071084555937
+      spriteID: 6f46796d736d54840800000000000000
+      internalID: 5207804079435638006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Retry_1
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 35
+        width: 73
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80c4f78a3471d8e60800000000000000
+      internalID: 7966048895245437960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Retry_2
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 35
+        width: 73
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99ca7edf20ac0aa40800000000000000
+      internalID: 5377520069278936217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Retry_3
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 35
+        width: 73
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08d4c1bb1250accf0800000000000000
+      internalID: -231366788424905344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Retry_4
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 10
+        width: 73
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 322d0eab3415a2160800000000000000
+      internalID: 7001497922040812067
       vertices: []
       indices: 
       edges: []
@@ -125,7 +225,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +235,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UIDisplayNAme_0: 3669053071084555937
+      Retry_0: 5207804079435638006
+      Retry_1: 7966048895245437960
+      Retry_2: 5377520069278936217
+      Retry_3: -231366788424905344
+      Retry_4: 7001497922040812067
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
