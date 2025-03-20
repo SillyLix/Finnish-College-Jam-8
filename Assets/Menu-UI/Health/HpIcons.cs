@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class HpIcons : MonoBehaviour
 {
-    public int placeholderHP;
+
+    [SerializeField] HealthSystem healthSystem;
+    public float placeholderHP;
     public int numOfHearts;
 
     // Icon related things
@@ -14,6 +16,7 @@ public class HpIcons : MonoBehaviour
 
     private void Update()
     {
+        placeholderHP = healthSystem.CurrentHealth;
         if (placeholderHP > numOfHearts)
         {
             placeholderHP = numOfHearts;
