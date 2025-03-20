@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using System;
+using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Weapons : MonoBehaviour
+public class UpdatedGunScript : MonoBehaviour
 {
     public GameObject bullet;
     public Animator playerAnimator;
@@ -8,7 +10,7 @@ public class Weapons : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private PlayerMovement2D playerController;
 
-    public bool canFire = true;
+    public float fireCooldownTime = 0.3f;
     public float fireCooldown = 0.3f;
     private float fireTimer = 0f;
     private float gunOffsetX;
@@ -17,15 +19,17 @@ public class Weapons : MonoBehaviour
     public int maxBullets = 30;
     public Vector2 spawnOffset = new Vector2(0.8f, 0);
 
-    private bool isFacingRight = true;
+    public bool isFacingRight = true;
     private float minAngleRight = -45f;
     private float maxAngleRight = 45f;
     private float minAngleLeft = 135f;
     private float maxAngleLeft = 225f;
 
+    public bool canFire;
+
     void Start()
     {
-        playerController = FindFirstObjectByType<PlayerMovement2D>();
+        playerController = FindObjectOfType<PlayerMovement2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         gunOffsetX = transform.localPosition.x;
     }
@@ -36,12 +40,12 @@ public class Weapons : MonoBehaviour
 
         if (!canFire)
         {
-            fireTimer += Time.deltaTime;
-            if (fireTimer >= fireCooldown)
-            {
-                canFire = true;
-                fireTimer = 0f;
-            }
+            if (fireTimer >= fireCooldownTime)
+                if (fireTimer >= fireCooldown)
+                {
+                    canFire = true;
+                    fireTimer = 0f;
+                }
         }
 
         if (Input.GetMouseButtonDown(0) && canFire)
@@ -49,17 +53,19 @@ public class Weapons : MonoBehaviour
             FireGun();
         }
 
+        // Handle facing direction based on player input (A and D keys)
         if (Input.GetKeyDown(KeyCode.A))
         {
             isFacingRight = false;
-            UpdateGunXPosition();
+            UpdateGunXPosition(); // Update gun's X position when facing left
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             isFacingRight = true;
-            UpdateGunXPosition();
+            UpdateGunXPosition(); // Update gun's X position when facing right
         }
 
+        // Aim at the cursor
         AimAtCursor();
     }
 
@@ -75,7 +81,7 @@ public class Weapons : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
             Input.mousePosition.x,
             Input.mousePosition.y,
-            -Camera.main.transform.position.z
+        -Camera.main.transform.position.z
         ));
 
         Vector2 direction = (mousePosition - transform.position).normalized;
@@ -96,6 +102,7 @@ public class Weapons : MonoBehaviour
         Vector2 direction = (mousePosition - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
+        // Clamping angle for facing right or left
         if (isFacingRight)
         {
             angle = Mathf.Clamp(angle, minAngleRight, maxAngleRight);
@@ -113,6 +120,7 @@ public class Weapons : MonoBehaviour
 
     public void UpdateGunXPosition()
     {
+        // Adjust gun's X position based on player facing direction
         float xOffset = isFacingRight ? gunOffsetX : -gunOffsetX;
         transform.localPosition = new Vector2(xOffset, transform.localPosition.y);
     }
