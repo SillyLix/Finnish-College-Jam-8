@@ -5,17 +5,17 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     [Header("Health Configuration")]
-    [SerializeField] private float maxHealth = 100f;
-    public float MaxHealth
+    [SerializeField] private int maxHealth = 100;
+    public int MaxHealth
     {
         get { return maxHealth; }
     }
 
-    private float currentHealth;
-    public float CurrentHealth
+    private int currentHealth;
+    public int CurrentHealth
     {
         get { return currentHealth; }
-    } 
+    }
 
     [SerializeField] private bool isPlayer = false;
     [SerializeField] private GameObject deathMenu;
@@ -33,17 +33,17 @@ public class HealthSystem : MonoBehaviour
     }
 
     // Method to apply damage to health
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
-        currentHealth = Mathf.Max(currentHealth - damageAmount, 0f);
-        if (currentHealth == 0f)
+        currentHealth = Mathf.Max(currentHealth - damageAmount, 0);
+        if (currentHealth == 0)
         {
             Die();
         }
     }
 
     // Method to heal health
-    public void Heal(float healAmount)
+    public void Heal(int healAmount)
     {
         currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
     }

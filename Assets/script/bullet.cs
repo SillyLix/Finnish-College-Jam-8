@@ -21,7 +21,4 @@ public class bullet : MonoBehaviour
         rigidbody2D.linearVelocity = transform.forward * speed; // Move the bullet forward at a speed of 10 units per second
     }
 
-
-
-
 }

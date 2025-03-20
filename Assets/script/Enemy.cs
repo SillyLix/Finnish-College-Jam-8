@@ -12,10 +12,10 @@ public class Enemy : MonoBehaviour
     private GameObject player;
 
     [SerializeField, BoxGroup("Enemy Info"), Required]
-    private float speed = 2f;
+    private int speed = 2;
 
     [SerializeField, BoxGroup("Enemy Info"), Required]
-    private float damage = 10f;
+    private int damage = 10;
 
 
     [SerializeField, BoxGroup("Enemy Info"), Required]
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
     private float lastAttackTime = 0f;
 
     [SerializeField, BoxGroup("Enemy Info"), Required, ShowIf("boomer")]
-    private float boomDmg = 20f;
+    private int boomDmg = 20;
 
     private float currentDistance;
 

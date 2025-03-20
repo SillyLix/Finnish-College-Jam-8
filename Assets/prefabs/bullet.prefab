@@ -152,10 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aee7f2c87a0f3e448919065808030d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
+  damageAmount: 1
   isTriggerType: 1
   destroyAfterDMG: 1
-  damageSound: {fileID: 8300000, guid: 0b07cf2a68cf44e4a8f279fffe301bd6, type: 3}
+  damageSound: {fileID: 0}
 --- !u!114 &439354764257334828
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public class DamageSystem : MonoBehaviour
 {
     [Header("Damage Configuration")]
-    [SerializeField] private float damageAmount = 10f;
+    [SerializeField] private int damageAmount = 1;
     [Tooltip("If you are using trigger to deal dmg click this")]
     [SerializeField] private bool isTriggerType;
     [SerializeField] private bool destroyAfterDMG = true;
