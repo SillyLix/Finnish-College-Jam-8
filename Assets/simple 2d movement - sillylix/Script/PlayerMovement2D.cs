@@ -9,8 +9,7 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 
-// MESSAGE FROM ANNE: I added in Flip(), HandleInputFlip() and called it in HandleMovement()
-//not working tho :((
+
 public class PlayerMovement2D : MonoBehaviour
 {
     #region Variables
@@ -50,6 +49,9 @@ public class PlayerMovement2D : MonoBehaviour
     public static bool isFacingRight = true;
     private Weapons weaponScript;
 
+    // ANNIKA'S ADDED VARIABLES
+    public Animator animator;
+
     #endregion
 
     void Start()
@@ -66,7 +68,7 @@ public class PlayerMovement2D : MonoBehaviour
         HandleMovement();
         HandleJumping();
         HandleDashing();
-        //HandleInputFlip();
+        HandleInputFlip();
     }
 
     private void FixedUpdate()
@@ -98,6 +100,8 @@ public class PlayerMovement2D : MonoBehaviour
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = doubleJumpNeeded;
+
+                animator.Play("Player_jump");
             }
             else if (canDoubleJump && Input.GetKeyDown(jumpKey))
             {
