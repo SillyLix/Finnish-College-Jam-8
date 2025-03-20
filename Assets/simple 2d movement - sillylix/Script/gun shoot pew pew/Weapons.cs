@@ -1,42 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+﻿using UnityEngine;
 
 public class Weapons : MonoBehaviour
 {
     public GameObject bullet;
     public Animator playerAnimator;
 
-    //private ScoreHP scoreHP;
+    private SpriteRenderer spriteRenderer;
     private PlayerMovement2D playerController;
 
     public bool canFire = true;
     public float fireCooldown = 0.3f;
     private float fireTimer = 0f;
+    private float gunOffsetX;
 
     public int bullets = 30;
     public int maxBullets = 30;
-
     public Vector2 spawnOffset = new Vector2(0.8f, 0);
+
+    private bool isFacingRight = true;
+    private float minAngleRight = -45f;
+    private float maxAngleRight = 45f;
+    private float minAngleLeft = 135f;
+    private float maxAngleLeft = 225f;
 
     void Start()
     {
-        //scoreHP = FindObjectOfType<ScoreHP>();
-        playerController = Object.FindFirstObjectByType<PlayerMovement2D>();
+        playerController = FindFirstObjectByType<PlayerMovement2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        gunOffsetX = transform.localPosition.x;
     }
 
     void Update()
     {
-        //if (!PauseMenu.isGamePaused)
-        //{
-
-        //}
-
-        if (bullets > maxBullets)
-        {
-            bullets = maxBullets;
-        }
+        bullets = Mathf.Min(bullets, maxBullets);
 
         if (!canFire)
         {
@@ -48,50 +44,76 @@ public class Weapons : MonoBehaviour
             }
         }
 
-        // Fire gun if possible
-        if (Input.GetKeyDown(KeyCode.E) && canFire)
+        if (Input.GetMouseButtonDown(0) && canFire)
         {
-            Gun();
-            //scoreHP.UpdatePowerUpSlot();
+            FireGun();
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            isFacingRight = false;
+            UpdateGunXPosition();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            isFacingRight = true;
+            UpdateGunXPosition();
+        }
+
+        AimAtCursor();
     }
 
-    public void Gun()
+    private void FireGun()
     {
         if (bullets <= 0) return;
         bullets -= 1;
+        playerAnimator?.SetTrigger("FireRevolver");
 
-        if (playerAnimator != null)
-        {
-            playerAnimator.SetTrigger("FireRevolver");
-        }
-
-        Vector2 spawnPosition = PlayerMovement2D.isFacingRight
-            ? (Vector2)transform.position + spawnOffset
-            : (Vector2)transform.position - spawnOffset;
-
+        Vector2 spawnPosition = (Vector2)transform.position + (isFacingRight ? spawnOffset : -spawnOffset);
         GameObject newBullet = Instantiate(bullet, spawnPosition, Quaternion.identity);
 
-        //if (!RevolverFunction.facing)
-        //{
-        //    newBullet.transform.localScale = new Vector3(-1, 1, 1);
-        //}
-        //else
-        //{
-        //    newBullet.transform.localScale = new Vector3(1, 1, 1);
-        //}
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
+            Input.mousePosition.x,
+            Input.mousePosition.y,
+            -Camera.main.transform.position.z
+        ));
 
-
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        mousePosition.z = transform.position.z;
-
-        Vector2 bulletDirection = (mousePosition - transform.position).normalized;
-
-        RevolverFunction revolverScript = newBullet.GetComponent<RevolverFunction>();
-        //Vector2 bulletDirection = PlayerMovement2D.isFacingRight ? Vector2.right : Vector2.left;
-        revolverScript.SetDirection(bulletDirection);
+        Vector2 direction = (mousePosition - transform.position).normalized;
+        newBullet.GetComponent<RevolverFunction>().SetDirection(direction);
+        newBullet.transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
 
         canFire = false;
+    }
+
+    private void AimAtCursor()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(
+            Input.mousePosition.x,
+            Input.mousePosition.y,
+            -Camera.main.transform.position.z
+        ));
+
+        Vector2 direction = (mousePosition - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if (isFacingRight)
+        {
+            angle = Mathf.Clamp(angle, minAngleRight, maxAngleRight);
+        }
+        else
+        {
+            if (angle > 0)
+                angle = Mathf.Clamp(angle, minAngleLeft - 360f, maxAngleLeft - 360f);
+            else
+                angle = Mathf.Clamp(angle, minAngleLeft, maxAngleLeft);
+        }
+
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    public void UpdateGunXPosition()
+    {
+        float xOffset = isFacingRight ? gunOffsetX : -gunOffsetX;
+        transform.localPosition = new Vector2(xOffset, transform.localPosition.y);
     }
 }

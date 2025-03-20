@@ -9,7 +9,7 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 
-// MESSAGE FROM ANNE: I added in Flip() and called it in HandleMovement()
+
 public class PlayerMovement2D : MonoBehaviour
 {
     #region Variables
@@ -45,7 +45,12 @@ public class PlayerMovement2D : MonoBehaviour
     private bool isTouchingWall = false;
     private Rigidbody2D rb2d;
 
+    //ANNES ADDED VARIABLES
     public static bool isFacingRight = true;
+    private Weapons weaponScript;
+
+    // ANNIKA'S ADDED VARIABLES
+    public Animator animator;
 
     #endregion
 
@@ -54,6 +59,8 @@ public class PlayerMovement2D : MonoBehaviour
         // Get the Rigidbody2D component
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = gravityScale;
+
+        weaponScript = GetComponentInChildren<Weapons>();
     }
 
     void Update()
@@ -61,6 +68,7 @@ public class PlayerMovement2D : MonoBehaviour
         HandleMovement();
         HandleJumping();
         HandleDashing();
+        HandleInputFlip();
     }
 
     private void FixedUpdate()
@@ -74,8 +82,6 @@ public class PlayerMovement2D : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             rb2d.linearVelocity = new Vector2(horizontalInput * playerSpeed, rb2d.linearVelocity.y);
-
-            Flip();
         }
 
         if (verticalMovementNeeded)
@@ -94,6 +100,8 @@ public class PlayerMovement2D : MonoBehaviour
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = doubleJumpNeeded;
+
+                animator.Play("Player_jump");
             }
             else if (canDoubleJump && Input.GetKeyDown(jumpKey))
             {
@@ -172,15 +180,28 @@ public class PlayerMovement2D : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
     }
+    void HandleInputFlip()
+    {
+        // Check for A or D key press and flip accordingly
+        if (Input.GetKeyDown(KeyCode.A) && isFacingRight) // Pressing A, should flip to the left
+        {
+            Flip();
+            weaponScript.UpdateGunXPosition();
+        }
+        else if (Input.GetKeyDown(KeyCode.D) && !isFacingRight) // Pressing D, should flip to the right
+        {
+            Flip();
+            weaponScript.UpdateGunXPosition();
+        }
+    }
+
     private void Flip()
     {
-        if (isFacingRight && horizontalInput < 0f || !isFacingRight && horizontalInput > 0f)
-        {
-            isFacingRight = !isFacingRight;
+        isFacingRight = !isFacingRight;
 
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1f;
-            transform.localScale = localScale;
-        }
+        // Flip the sprite by changing the sign of the x scale
+        Vector3 localScale = transform.localScale;
+        localScale.x = -localScale.x;
+        transform.localScale = localScale;
     }
 }
