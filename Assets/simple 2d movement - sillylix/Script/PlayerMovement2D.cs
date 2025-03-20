@@ -60,6 +60,8 @@ public class PlayerMovement2D : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = gravityScale;
 
+        animator = GetComponent<Animator>();
+
         weaponScript = GetComponentInChildren<Weapons>();
     }
 
@@ -82,13 +84,13 @@ public class PlayerMovement2D : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             rb2d.linearVelocity = new Vector2(horizontalInput * playerSpeed, rb2d.linearVelocity.y);
-        }
 
-        if (verticalMovementNeeded)
+            // Set animation based on movement
+            animator.SetBool("isWalking", horizontalInput != 0);
+        }
+        else
         {
-            rb2d.gravityScale = 0; // Disable gravity for top-down movement
-            verticalInput = Input.GetAxis("Vertical");
-            rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, verticalInput * playerSpeed);
+            animator.SetBool("isWalking", false);
         }
     }
 
@@ -100,24 +102,20 @@ public class PlayerMovement2D : MonoBehaviour
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = doubleJumpNeeded;
-
-                animator.Play("Player_jump");
+                animator.SetBool("isJumping", true);
             }
             else if (canDoubleJump && Input.GetKeyDown(jumpKey))
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = false;
+                animator.SetBool("isJumping", true);
             }
+        }
 
-            // Increase gravity when pressing down (fast fall)
-            if (Input.GetKey(KeyCode.DownArrow) && !isGrounded)
-            {
-                rb2d.gravityScale = gravityScale * 2;
-            }
-            else
-            {
-                rb2d.gravityScale = gravityScale;
-            }
+        // Reset jump animation when grounded
+        if (isGrounded)
+        {
+            animator.SetBool("isJumping", false);
         }
     }
 
