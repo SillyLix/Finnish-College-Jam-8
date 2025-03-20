@@ -12,6 +12,7 @@ public class DialogueSystem : MonoBehaviour
     private DialogueLine[] dialogueLines;
     private int currentLineIndex;
     private Coroutine typingCoroutine;
+    private bool isDialogueActive = false;
 
     [System.Serializable]
     public struct DialogueLine
@@ -27,7 +28,7 @@ public class DialogueSystem : MonoBehaviour
 
     void Update()
     {
-        if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.Z))
+        if (isDialogueActive && Input.GetKeyDown(KeyCode.Z))
         {
             DisplayNextLine();
         }
@@ -35,9 +36,16 @@ public class DialogueSystem : MonoBehaviour
 
     public void StartDialogue(DialogueLine[] lines)
     {
+        if (lines == null || lines.Length == 0)
+        {
+            Debug.LogError("No dialogue lines provided!");
+            return;
+        }
+
         dialogueLines = lines;
         currentLineIndex = 0;
         dialoguePanel.SetActive(true);
+        isDialogueActive = true;
         DisplayNextLine();
     }
 
@@ -72,5 +80,6 @@ public class DialogueSystem : MonoBehaviour
     private void EndDialogue()
     {
         dialoguePanel.SetActive(false);
+        isDialogueActive = false;
     }
 }

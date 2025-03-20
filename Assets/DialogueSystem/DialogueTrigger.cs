@@ -4,29 +4,19 @@ public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private DialogueSystem.DialogueLine[] dialogueLines;
 
-    private bool playerInRange = false;
-
-    void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(KeyCode.Z))
-        {
-            FindObjectOfType<DialogueSystem>().StartDialogue(dialogueLines);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
+            DialogueSystem dialogueSystem = FindFirstObjectByType<DialogueSystem>();
+            if (dialogueSystem != null)
+            {
+                dialogueSystem.StartDialogue(dialogueLines);
+            }
+            else
+            {
+                Debug.LogError("DialogueSystem not found in the scene!");
+            }
         }
     }
 }
