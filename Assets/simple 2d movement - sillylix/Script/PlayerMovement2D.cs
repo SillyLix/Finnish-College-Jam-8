@@ -9,7 +9,8 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 
-
+// MESSAGE FROM ANNE: I added in Flip(), HandleInputFlip() and called it in HandleMovement()
+//not working tho :((
 public class PlayerMovement2D : MonoBehaviour
 {
     #region Variables
@@ -47,10 +48,8 @@ public class PlayerMovement2D : MonoBehaviour
 
     //ANNES ADDED VARIABLES
     public static bool isFacingRight = true;
-    private Weapons weaponScript;
-
-    // ANNIKA'S ADDED VARIABLES
-    public Animator animator;
+    private GunTransform gunTransform;
+    private SpriteRenderer playerSpriteRenderer;
 
     #endregion
 
@@ -60,9 +59,17 @@ public class PlayerMovement2D : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = gravityScale;
 
-        animator = GetComponent<Animator>();
+        playerSpriteRenderer = GetComponent<SpriteRenderer>();
+        if (playerSpriteRenderer == null)
+        {
+            Debug.LogError("Player SpriteRenderer not found! Make sure the player has a SpriteRenderer attached.");
+        }
 
-        weaponScript = GetComponentInChildren<Weapons>();
+        gunTransform = GetComponentInChildren<GunTransform>();
+        if (gunTransform == null)
+        {
+            Debug.LogError("GunTransform script not found! Make sure the player has a child object with a weapon.");
+        }
     }
 
     void Update()
@@ -70,7 +77,7 @@ public class PlayerMovement2D : MonoBehaviour
         HandleMovement();
         HandleJumping();
         HandleDashing();
-        HandleInputFlip();
+        HandlePlayerSpriteFlip();
     }
 
     private void FixedUpdate()
@@ -84,13 +91,13 @@ public class PlayerMovement2D : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             rb2d.linearVelocity = new Vector2(horizontalInput * playerSpeed, rb2d.linearVelocity.y);
-
-            // Set animation based on movement
-            animator.SetBool("isWalking", horizontalInput != 0);
         }
-        else
+
+        if (verticalMovementNeeded)
         {
-            animator.SetBool("isWalking", false);
+            rb2d.gravityScale = 0; // Disable gravity for top-down movement
+            verticalInput = Input.GetAxis("Vertical");
+            rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, verticalInput * playerSpeed);
         }
     }
 
@@ -102,20 +109,22 @@ public class PlayerMovement2D : MonoBehaviour
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = doubleJumpNeeded;
-                animator.SetBool("isJumping", true);
             }
             else if (canDoubleJump && Input.GetKeyDown(jumpKey))
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = false;
-                animator.SetBool("isJumping", true);
             }
-        }
 
-        // Reset jump animation when grounded
-        if (isGrounded)
-        {
-            animator.SetBool("isJumping", false);
+            // Increase gravity when pressing down (fast fall)
+            if (Input.GetKey(KeyCode.DownArrow) && !isGrounded)
+            {
+                rb2d.gravityScale = gravityScale * 2;
+            }
+            else
+            {
+                rb2d.gravityScale = gravityScale;
+            }
         }
     }
 
@@ -178,28 +187,20 @@ public class PlayerMovement2D : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
     }
-    void HandleInputFlip()
+    void HandlePlayerSpriteFlip()
     {
-        // Check for A or D key press and flip accordingly
-        if (Input.GetKeyDown(KeyCode.A) && isFacingRight) // Pressing A, should flip to the left
+        if (gunTransform != null)
         {
-            Flip();
-            weaponScript.UpdateGunXPosition();
-        }
-        else if (Input.GetKeyDown(KeyCode.D) && !isFacingRight) // Pressing D, should flip to the right
-        {
-            Flip();
-            weaponScript.UpdateGunXPosition();
+            // Flip player sprite based on the gun's Y-axis flip
+            if (gunTransform.IsGunSpriteFlipped())
+            {
+                playerSpriteRenderer.flipX = true; // Flip player sprite to face left
+            }
+            else
+            {
+                playerSpriteRenderer.flipX = false; // Flip player sprite to face right
+            }
         }
     }
 
-    private void Flip()
-    {
-        isFacingRight = !isFacingRight;
-
-        // Flip the sprite by changing the sign of the x scale
-        Vector3 localScale = transform.localScale;
-        localScale.x = -localScale.x;
-        transform.localScale = localScale;
-    }
 }

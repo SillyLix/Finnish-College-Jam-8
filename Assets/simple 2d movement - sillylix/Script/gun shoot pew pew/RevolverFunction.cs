@@ -17,15 +17,14 @@ public class RevolverFunction : MonoBehaviour
         {
             rb.gravityScale = 0f; // Ensure gravity is disabled for a kinematic Rigidbody2D
         }
+
+        // Ensure the bullet is facing the correct direction as soon as it's instantiated
+        RotateBullet();
     }
 
     public void SetDirection(Vector2 newDirection)
     {
         direction = newDirection.normalized; // Normalize to keep it a unit vector
-
-        // Set the bullet's rotation immediately based on the direction
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle)); // Rotate the bullet
     }
 
     // Update is called once per frame
@@ -51,6 +50,15 @@ public class RevolverFunction : MonoBehaviour
         {
             rb.MovePosition((Vector2)transform.position + direction * speed * Time.deltaTime);
         }
+    }
+
+    public void RotateBullet()
+    {
+        // Calculate the angle in degrees of the direction vector
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Rotate the bullet to match the direction (on the Z-axis)
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
     }
 
     // Handle collisions with other objects (e.g., enemy or ground)

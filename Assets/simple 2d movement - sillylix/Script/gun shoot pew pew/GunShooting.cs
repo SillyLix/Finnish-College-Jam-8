@@ -6,17 +6,18 @@ public class GunShooting : MonoBehaviour
     public Animator playerAnimator;
 
     private bool canFire = true;
-    private float fireCooldown = 0.1f;
+    private float fireCooldown = 0.3f;
     private float fireTimer = 0f;
-
     [SerializeField] private int bullets = 30;
-    [SerializeField] private int maxBullets = 100;  // Set a default max bullet capacity
+    int maxBullets;
 
-    private GunTransform gunTransform;
+    public Vector2 spawnOffset = new Vector2(0.8f, 0);  // Offset to position the bullet spawn point
+
+    private GunTransform gunTransform; // Reference to the GunTransform script
 
     void Start()
     {
-        gunTransform = GetComponentInParent<GunTransform>();  // Assuming the GunTransform is on the parent (gun)
+        gunTransform = GetComponentInParent<GunTransform>(); // Get the GunTransform script attached to the gun's parent
         maxBullets = bullets;
     }
 
@@ -25,6 +26,7 @@ public class GunShooting : MonoBehaviour
         // Clamp bullet count within max bullets
         bullets = Mathf.Min(bullets, maxBullets);
 
+        // Handle firing cooldown
         if (!canFire)
         {
             fireTimer += Time.deltaTime;
@@ -35,25 +37,25 @@ public class GunShooting : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(0) && canFire && bullets > 0)
+        // Fire weapon
+        if (Input.GetMouseButton(0) && canFire)
         {
             FireGun();
         }
-
-        // Adjust the barrel Y position based on gun flip (for proper positioning)
-        AdjustBarrelPosition();
     }
 
     private void FireGun()
     {
         if (bullets <= 0) return;
-
         bullets -= 1;
 
+        // Trigger fire animation
         playerAnimator?.SetTrigger("FireRevolver");
 
-        // Use the barrel's position for spawning bullets
-        Vector2 spawnPosition = transform.position;  // Since this script is on the barrel, use its position
+        // Spawn the bullet at the empty GameObject's position (which is positioned at the barrel)
+        Vector2 spawnPosition = transform.position;  // Use the position of the empty GameObject (parented to the gun)
+
+        // Instantiate the bullet at the spawn position
         GameObject newBullet = Instantiate(bullet, spawnPosition, Quaternion.identity);
 
         // Get direction to cursor and set bullet's direction
@@ -63,26 +65,16 @@ public class GunShooting : MonoBehaviour
             -Camera.main.transform.position.z
         ));
 
+        // Calculate direction to cursor
         Vector2 direction = (mousePosition - transform.position).normalized;
+
+        // Set the bullet's direction in RevolverFunction (movement and rotation will be handled there)
         RevolverFunction bulletScript = newBullet.GetComponent<RevolverFunction>();
-        bulletScript.SetDirection(direction);
+        bulletScript.SetDirection(direction);  // Set the direction of the bullet in RevolverFunction
+
+        // Make sure the bullet is facing the correct way before moving
+        bulletScript.RotateBullet();
 
         canFire = false;
-    }
-
-    // Adjust the barrel Y position depending on whether the gun is flipped
-    private void AdjustBarrelPosition()
-    {
-        // No need to reference barrel explicitly since the script is on the barrel
-        if (gunTransform.isFacingRight)
-        {
-            // Normal position when facing right
-            transform.localPosition = new Vector3(transform.localPosition.x, 0.035f, transform.localPosition.z);
-        }
-        else
-        {
-            // Adjust position when facing left (flipped)
-            transform.localPosition = new Vector3(transform.localPosition.x, -0.03f, transform.localPosition.z);
-        }
     }
 }
