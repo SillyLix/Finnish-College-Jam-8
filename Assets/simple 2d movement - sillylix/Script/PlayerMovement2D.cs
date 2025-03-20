@@ -47,7 +47,6 @@ public class PlayerMovement2D : MonoBehaviour
 
     //ANNES ADDED VARIABLES
     public static bool isFacingRight = true;
-    private Weapons weaponScript;
 
     // ANNIKA'S ADDED VARIABLES
     public Animator animator;
@@ -62,7 +61,6 @@ public class PlayerMovement2D : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        weaponScript = GetComponentInChildren<Weapons>();
     }
 
     void Update()
@@ -184,12 +182,12 @@ public class PlayerMovement2D : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A) && isFacingRight) // Pressing A, should flip to the left
         {
             Flip();
-            weaponScript.UpdateGunXPosition();
+
         }
         else if (Input.GetKeyDown(KeyCode.D) && !isFacingRight) // Pressing D, should flip to the right
         {
             Flip();
-            weaponScript.UpdateGunXPosition();
+
         }
     }
 

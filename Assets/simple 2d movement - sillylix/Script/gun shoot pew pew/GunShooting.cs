@@ -11,6 +11,8 @@ public class GunShooting : MonoBehaviour
 
     [SerializeField] private int bullets = 30;
     [SerializeField] private int maxBullets = 100;  // Set a default max bullet capacity
+    [SerializeField] private AudioClip soundname;
+
 
     private GunTransform gunTransform;
 
@@ -51,6 +53,8 @@ public class GunShooting : MonoBehaviour
         bullets -= 1;
 
         playerAnimator?.SetTrigger("FireRevolver");
+        SoundFXManager.instance.PlaySoundFXClip(soundname, transform, 1f);
+
 
         // Use the barrel's position for spawning bullets
         Vector2 spawnPosition = transform.position;  // Since this script is on the barrel, use its position
