@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7152456887932075535}
   - component: {fileID: 246222211093327650}
   - component: {fileID: 3149779333260531387}
+  - component: {fileID: 414833061069745401}
   m_Layer: 0
   m_Name: kittens_bullet
   m_TagString: Untagged
@@ -162,3 +163,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &414833061069745401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7160973179645766241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aee7f2c87a0f3e448919065808030d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 1
+  isTriggerType: 0
+  destroyAfterDMG: 1
+  damageSound: {fileID: 8300000, guid: 17ee496235d794342967c8adb4c65004, type: 3}

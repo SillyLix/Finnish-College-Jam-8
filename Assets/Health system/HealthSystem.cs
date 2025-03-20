@@ -5,14 +5,14 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     [Header("Health Configuration")]
-    [SerializeField] private int maxHealth = 100;
-    public int MaxHealth
+    [SerializeField] private float maxHealth = 100;
+    public float MaxHealth
     {
         get { return maxHealth; }
     }
 
-    private int currentHealth;
-    public int CurrentHealth
+    private float currentHealth;
+    public float CurrentHealth
     {
         get { return currentHealth; }
     }

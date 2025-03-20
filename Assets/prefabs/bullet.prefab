@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1855354459804476305}
   - component: {fileID: 6393360913997552413}
   - component: {fileID: 8653452890340223394}
-  - component: {fileID: 439354764257334828}
   - component: {fileID: 1336274943942126198}
+  - component: {fileID: -1206233103690173480}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -106,19 +106,6 @@ MonoBehaviour:
   isTriggerType: 1
   destroyAfterDMG: 1
   damageSound: {fileID: 0}
---- !u!114 &439354764257334828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466809346421307787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab9f295b87a2f1d45bdbb2fc4dbce9eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
 --- !u!61 &1336274943942126198
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -165,3 +152,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.07, y: 0.08}
   m_EdgeRadius: 0
+--- !u!114 &-1206233103690173480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466809346421307787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11b6e6e9e2f1fe341895d06c5a702f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasHit: 0
+  speed: 40
+  bulletHitbox: {fileID: 1466809346421307787}

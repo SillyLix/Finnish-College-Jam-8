@@ -6,7 +6,7 @@ public class HpIcons : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private HealthSystem healthSystem;
-    public int PlayerHP;
+    public float PlayerHP;
     public int numOfHearts;
 
     // Icon related things
@@ -17,28 +17,46 @@ public class HpIcons : MonoBehaviour
     private void Start()
     {
         healthSystem = player.GetComponent<HealthSystem>();
-        PlayerHP = healthSystem.CurrentHealth;
         hearts = GetComponentsInChildren<Image>();
+
+        // Debug log to check if hearts array is populated correctly
+        Debug.Log("Hearts array length: " + hearts.Length);
     }
 
     private void Update()
     {
-        if (PlayerHP > numOfHearts)
+        PlayerHP = healthSystem.CurrentHealth; // Update PlayerHP with the current health value
+
+        if (PlayerHP > healthSystem.MaxHealth)
         {
-            PlayerHP = numOfHearts;
+            PlayerHP = healthSystem.MaxHealth; // Clamp PlayerHP to max health
         }
 
-        for (int i = 0; i < hearts.Length; i++)
+        if (PlayerHP == 0)
         {
-            if (i < PlayerHP)
-            {
-                hearts[i].sprite = fullHeart;
-            }
-            else
-            {
-                hearts[i].sprite = emptyHeart;
-            }
-            hearts[i].enabled = i < numOfHearts;
+            hearts[0].sprite = emptyHeart;
+        }
+        else if (PlayerHP < healthSystem.MaxHealth * 0.20)
+        {
+            hearts[1].sprite = emptyHeart;
+        }
+        else if (PlayerHP < healthSystem.MaxHealth * 0.40)
+        {
+            hearts[2].sprite = emptyHeart;
+        }
+        else if (PlayerHP < healthSystem.MaxHealth * 0.60)
+        {
+            hearts[3].sprite = emptyHeart;
+        }
+        else if (PlayerHP < healthSystem.MaxHealth * 0.80f)
+        {
+            hearts[4].sprite = emptyHeart;
+        }
+        else
+        {
+            Debug.LogError("Invalid health value: " + PlayerHP);
         }
     }
+
+
 }
