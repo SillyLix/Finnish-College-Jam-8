@@ -7,6 +7,7 @@ public class DamageSystem : MonoBehaviour
     [SerializeField] private float damageAmount = 10f;
     [Tooltip("If you are using trigger to deal dmg click this")]
     [SerializeField] private bool isTriggerType;
+    [SerializeField] private bool isPlayer;
 
     [Header("Audio Configuration")]
     [SerializeField] private AudioClip damageSound;
@@ -17,6 +18,13 @@ public class DamageSystem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (isPlayer)
+        {
+            if (other.CompareTag("Player"))
+            {
+                return;
+            }
+        }
         if (isTriggerType)
         {
             HandleDamage(other.gameObject);
@@ -25,6 +33,13 @@ public class DamageSystem : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (isPlayer)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                return;
+            }
+        }
         if (!isTriggerType)
         {
             HandleDamage(collision.gameObject);

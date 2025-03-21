@@ -11,11 +11,11 @@ public class HealthSystem : MonoBehaviour
         get { return maxHealth; }
     }
 
-    private float currentHealth;
+    public float currentHealth;
     public float CurrentHealth
     {
         get { return currentHealth; }
-    } 
+    }
 
     [SerializeField] private bool isPlayer = false;
     [SerializeField] private GameObject deathMenu;

@@ -47,6 +47,7 @@ public class PlayerMovementEditor : Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("groundLayer"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("drawJumpDetector"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("jumpKey"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("jumpSound"));
 
                 if (playerMovement2D.groundLayer == 0)
                 {

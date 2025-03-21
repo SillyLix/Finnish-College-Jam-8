@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class HpIcons : MonoBehaviour
 {
-    public int placeholderHP;
+    public HealthSystem healthSystem;
+    public float placeholderHP;
     public int numOfHearts;
 
     // Icon related things
@@ -14,6 +15,8 @@ public class HpIcons : MonoBehaviour
 
     private void Update()
     {
+        placeholderHP = healthSystem.currentHealth;
+
         if (placeholderHP > numOfHearts)
         {
             placeholderHP = numOfHearts;
@@ -29,7 +32,6 @@ public class HpIcons : MonoBehaviour
             {
                 hearts[i].sprite = emptyHeart;
             }
-            hearts[i].enabled = i < numOfHearts;
         }
     }
 }

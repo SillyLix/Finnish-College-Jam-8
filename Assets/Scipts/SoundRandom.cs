@@ -5,8 +5,10 @@ public class RandomSound : MonoBehaviour
 {
     [SerializeField] private AudioClip[] cringeSounds;
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] public readonly float timeToWaitMin = 0.5f;
+    [SerializeField] public readonly float timeToWaitMin = 2f;
     [SerializeField] public readonly float timeToWaitMax = 15f;
+    float waitTime;
+    int randomIndex;
 
     void Start()
     {
@@ -17,10 +19,11 @@ public class RandomSound : MonoBehaviour
     {
         while (true)
         {
-            int randomIndex = Random.Range(0, cringeSounds.Length);
-            audioSource.PlayOneShot(cringeSounds[randomIndex]);
-            float waitTime = Random.Range(timeToWaitMin, timeToWaitMax) + cringeSounds[randomIndex].length;
+            waitTime = Random.Range(timeToWaitMin, timeToWaitMax);
+            waitTime += cringeSounds[randomIndex].length;
             yield return new WaitForSeconds(waitTime);
+            randomIndex = Random.Range(0, cringeSounds.Length);
+            audioSource.PlayOneShot(cringeSounds[randomIndex]);
         }
     }
 }

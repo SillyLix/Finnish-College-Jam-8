@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Rendering;
 
 // This script is for 2D movement with jump, dash, double jump, rigidbody movement, and transform movement
 // You can use this script for 2D platformer games and 2D top-down games
@@ -49,8 +50,8 @@ public class PlayerMovement2D : MonoBehaviour
     public static bool isFacingRight = true;
     private GunTransform gunTransform;
     private SpriteRenderer playerSpriteRenderer;
-
-    [SerializeField] private AudioClip jumpSound;
+    private Animator anim;
+    public AudioClip jumpSound;
 
     #endregion
 
@@ -59,6 +60,7 @@ public class PlayerMovement2D : MonoBehaviour
         // Get the Rigidbody2D component
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = gravityScale;
+        anim = GetComponent<Animator>(); // Hakee animaattorin
 
         playerSpriteRenderer = GetComponent<SpriteRenderer>();
         if (playerSpriteRenderer == null)
@@ -92,6 +94,11 @@ public class PlayerMovement2D : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
             rb2d.linearVelocity = new Vector2(horizontalInput * playerSpeed, rb2d.linearVelocity.y);
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
         }
 
         if (verticalMovementNeeded)
@@ -100,6 +107,8 @@ public class PlayerMovement2D : MonoBehaviour
             verticalInput = Input.GetAxis("Vertical");
             rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, verticalInput * playerSpeed);
         }
+
+
     }
 
     void HandleJumping()
@@ -110,18 +119,30 @@ public class PlayerMovement2D : MonoBehaviour
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 SoundFXManager.instance.PlaySoundFXClip(jumpSound, transform, 1f);
+                anim.SetBool("isJumping", true);
+                anim.SetBool("isWalking", false);
+
                 canDoubleJump = doubleJumpNeeded;
             }
+
+
             else if (canDoubleJump && Input.GetKeyDown(jumpKey))
             {
                 rb2d.linearVelocity = new Vector2(rb2d.linearVelocity.x, jumpForce);
                 canDoubleJump = false;
             }
+            else
+            {
+                anim.SetBool("isJumping", false);
+                anim.SetBool("isWalking", true);
+            }
 
             // Increase gravity when pressing down (fast fall)
-            if (Input.GetKey(KeyCode.DownArrow) && !isGrounded)
+            if (Input.GetKey(KeyCode.S) && !isGrounded)
             {
                 rb2d.gravityScale = gravityScale * 2;
+                anim.SetBool("isJumping", false);
+                anim.SetBool("isWalking", true);
             }
             else
             {

@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 21d67520abc796b4e801adc865b69078
+guid: 9369fc447188e4a4ebc8ef5a45dab9f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8437345265882128913
-    second: esJonne_idle_0
+      213: -4697622662982995605
+    second: maidKitten_idle_0
   - first:
-      213: 6504189464696315926
-    second: esJonne_idle_1
+      213: 1538487168608927311
+    second: maidKitten_idle_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -99,75 +99,49 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: esJonne_idle_0
+      name: maidKitten_idle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
-      alignment: 9
-      pivot: {x: 0.48324713, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fed95c30f2788ea80800000000000000
-      internalID: -8437345265882128913
+      spriteID: b61f21cb311beceb0800000000000000
+      internalID: -4697622662982995605
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: esJonne_idle_1
+      name: maidKitten_idle_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 0
-        width: 32
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5148411, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 610ef038bd5834a50800000000000000
-      internalID: 6504189464696315926
+      spriteID: f4e7e68bdedc95510800000000000000
+      internalID: 1538487168608927311
       vertices: []
       indices: 
       edges: []
@@ -176,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7804fbe6443da4d439f71a007b6d2a35
+    spriteID: 4dee11fdba984b74b8c2654d18ae8612
     internalID: 0
     vertices: []
     indices: 
@@ -186,8 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      esJonne_idle_0: -8437345265882128913
-      esJonne_idle_1: 6504189464696315926
+      maidKitten_idle_0: -4697622662982995605
+      maidKitten_idle_1: 1538487168608927311
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
